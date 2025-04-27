@@ -1,67 +1,161 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-  <title>Carry Mark Lookup</title>
-  <meta charset="UTF-8">
-  <style>
-    body { font-family: Arial, sans-serif; background: #fafbfc; margin: 0; padding: 20px; }
-    .panel { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ececec; max-width: 420px; margin: 40px auto; padding: 28px 30px; }
-    h2 { margin: 0 0 18px 0; color: #274472; }
-    select, input[type='text'] { font-size: 16px; padding: 6px 10px; margin-bottom: 8px; width: 100%; box-sizing: border-box; }
-    button { background: #274472; color: #fff; font-size: 16px; padding: 7px 30px; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
-    button:hover { background: #36549d; }
-    #result { margin-top: 24px; font-size: 16px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 12px;}
-    th, td { border: 1px solid #bbb; padding: 8px 13px; text-align: left; }
-    th { background: #eaf0fb; }
-    .msg-err { color: #ad2121; font-weight: bold; }
-    .msg-info { color: #235f25; font-weight: bold; }
-  </style>
-  <script>
-    async function checkMark() {
-      const course = document.getElementById('course').value;
-      const matrix = document.getElementById('matrix').value.trim();
-      const resultBox = document.getElementById('result');
-      resultBox.innerHTML = "";
 
+<title>Carry Mark Lookup</title>
 
-      if (!matrix) {
-        resultBox.innerHTML = "<span class='msg-err'>Please enter your matrix number.</span>";
-        return;
-      }
-      try {
-        const resp = await fetch('https://script.google.com/macros/s/AKfycbxEEtkZ-PAISBLl6Vg8enfFBc-G74MA-ZR9ABjsL2doF5kmSS-1Amej0olxgu5bRCTg5w/exec?course=' + encodeURIComponent(course) + '&matrix=' + encodeURIComponent(matrix));
-        const data = await resp.json();
-        if (data.error) {
-          resultBox.innerHTML = `<span class='msg-err'>${data.error}</span>`;
-        } else {
-          resultBox.innerHTML = `
-            <table>
-              <tr><th>Name</th><th>Carry Mark</th></tr>
-              <tr><td>${data.name}</td><td>${data.mark}</td></tr>
-            </table>`;
-        }
-      } catch (e) {
-        resultBox.innerHTML = "<span class='msg-err'>Cannot connect to server. Try again later.</span>";
-      }
+<meta charset="UTF-8">
+
+<style>
+
+text
+
+Copy
+body { font-family: Arial, sans-serif; background: #fafbfc; margin: 0; padding: 20px; }
+
+.panel { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ececec; max-width: 420px; margin: 40px auto; padding: 28px 30px; }
+
+h2 { margin: 0 0 18px 0; color: #274472; }
+
+select, input[type='text'] { font-size: 16px; padding: 6px 10px; margin-bottom: 8px; width: 100%; box-sizing: border-box; }
+
+button { background: #274472; color: #fff; font-size: 16px; padding: 7px 30px; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+
+button:hover { background: #36549d; }
+
+#result { margin-top: 24px; font-size: 16px; }
+
+table { border-collapse: collapse; width: 100%; margin-top: 12px;}
+
+th, td { border: 1px solid #bbb; padding: 8px 13px; text-align: left; }
+
+th { background: #eaf0fb; }
+
+.msg-err { color: #ad2121; font-weight: bold; }
+
+.msg-info { color: #235f25; font-weight: bold; }
+</style>
+
+<script>
+
+text
+
+Copy
+async function checkMark() {
+
+  const course = document.getElementById('course').value;
+
+  const matrix = document.getElementById('matrix').value.trim();
+
+  const resultBox = document.getElementById('result');
+
+  resultBox.innerHTML = "";
+
+  if (!matrix) {
+
+    resultBox.innerHTML = "\<span class='msg-err'\>Please enter your matrix number.\</span\>";
+
+    return;
+
+  }
+
+  try {
+
+    const resp = await fetch('https://script.google.com/macros/s/AKfycbxEEtkZ-PAISBLl6Vg8enfFBc-G74MA-ZR9ABjsL2doF5kmSS-1Amej0olxgu5bRCTg5w/exec?course=' + encodeURIComponent(course) + '&matrix=' + encodeURIComponent(matrix));
+
+    const data = await resp.json();
+
+    if (data.error) {
+
+      resultBox.innerHTML = \<span class='msg-err'\>$
+{data.error}</span>;
+
+text
+
+Copy
+    } else {
+
+      resultBox.innerHTML = 
+
+        \<table\>
+
+          \<tr\>\<th\>Name\</th\>\<th\>Carry Mark\</th\>\</tr\>
+
+          \<tr\>\<td\>
+d
+a
+t
+a
+.
+n
+a
+m
+e
+\<
+/
+t
+d
+ 
+\<
+t
+d
+ 
+data.name\</td\<td{data.mark}</td></tr>
+
+text
+
+Copy
+        \</table\>;
+
     }
-  </script>
+
+  } catch (e) {
+
+    resultBox.innerHTML = "\<span class='msg-err'\>Cannot connect to server. Try again later.\</span\>";
+
+  }
+
+}
+</script>
+
 </head>
+
 <body>
-  <div class="panel">
-    <h2>Check Your Carry Mark</h2>
-    <label for="course"><b>Select Course</b></label>
-    <select id="course">
-      <option value="MJD1112">MJD1112 - Anatomy and Physiology 1</option>
-      <option value="MJD1212">MJD1212 - Anatomy and Physiology 2</option>
-      <option value="MOS2233">MOS2233 - Ergonomics</option>
-      <option value="MOS3232">MOS3232 - Hazardous Waste Management</option>
-      <option value="MLD1123">MLD1123 - Biostatistics</option>
-    </select>
-    <label for="matrix"><b>Enter Matrix Number</b></label>
-    <input type="text" id="matrix" placeholder="E.g., S12345" maxlength="20">
-    <button onclick="checkMark()">Check My Mark</button>
-    <div id="result"></div>
-  </div>
+
+<div class="panel">
+
+text
+
+Copy
+\<h2\>Check Your Carry Mark\</h2\>
+
+\<label for="course"\>\<b\>Select Course\</b\>\</label\>
+
+\<select id="course"\>
+
+  \<option value="MJD1112"\>MJD1112 - Anatomy and Physiology 1\</option\>
+
+  \<option value="MJD1212"\>MJD1212 - Anatomy and Physiology 2\</option\>
+
+  \<option value="MOS2233"\>MOS2233 - Ergonomics\</option\>
+
+  \<option value="MOS3232"\>MOS3232 - Hazardous Waste Management\</option\>
+
+  \<option value="MLD1123"\>MLD1123 - Biostatistics\</option\>
+
+\</select\>
+
+\<label for="matrix"\>\<b\>Enter Matrix Number\</b\>\</label\>
+
+\<input type="text" id="matrix" placeholder="E.g., S12345" maxlength="20"\>
+
+\<button onclick="checkMark()"\>Check My Mark\</button\>
+
+\<div id="result"\>\</div\>
+</div>
+
 </body>
+
 </html>
