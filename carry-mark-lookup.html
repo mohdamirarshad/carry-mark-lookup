@@ -28,7 +28,7 @@ async function checkMark() {
     return;
   }
   try {
-    const resp = await fetch('https://script.google.com/macros/s/AKfycbxEEtkZ-PAISBLl6Vg8enfFBc-G74MA-ZR9ABjsL2doF5kmSS-1Amej0olxgu5bRCTg5w/exec?course=' + encodeURIComponent(course) + '&matrix=' + encodeURIComponent(matrix));
+    const resp = await fetch('https://script.google.com/macros/s/AKfycbzea4hEKqNaZ2rQudGJRmTiQaNPNakehXXuRyBdgF-kJDrR5-PQK5y_4PnyHYvZL47Ggg/exec?course=' + encodeURIComponent(course) + '&matrix=' + encodeURIComponent(matrix));
     const data = await resp.json();
     if (data.error) {
       resultBox.innerHTML = "<span class='msg-err'>" + data.error + "</span>";
