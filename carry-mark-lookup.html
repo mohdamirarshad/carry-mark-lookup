@@ -1,65 +1,200 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Carry Mark Lookup</title>
-<meta charset="UTF-8">
-<style>
-body { font-family: Arial, sans-serif; background: #fafbfc; margin: 0; padding: 20px; }
-.panel { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ececec; max-width: 420px; margin: 40px auto; padding: 28px 30px; }
-h2 { margin: 0 0 18px 0; color: #274472; }
-select, input[type='text'] { font-size: 16px; padding: 6px 10px; margin-bottom: 8px; width: 100%; box-sizing: border-box; }
-button { background: #274472; color: #fff; font-size: 16px; padding: 7px 30px; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
-button:hover { background: #36549d; }
-#result { margin-top: 24px; font-size: 16px; }
-table { border-collapse: collapse; width: 100%; margin-top: 12px;}
-th, td { border: 1px solid #bbb; padding: 8px 13px; text-align: left; }
-th { background: #eaf0fb; }
-.msg-err { color: #ad2121; font-weight: bold; }
-.msg-info { color: #235f25; font-weight: bold; }
-</style>
-<script>
-async function checkMark() {
-  const course = document.getElementById('course').value;
-  const matrix = document.getElementById('matrix').value.trim();
-  const resultBox = document.getElementById('result');
-  resultBox.innerHTML = "";
-  if (!matrix) {
-    resultBox.innerHTML = "<span class='msg-err'>Please enter your matrix number.</span>";
-    return;
-  }
-  try {
-    const resp = await fetch('https://script.google.com/macros/s/AKfycbzea4hEKqNaZ2rQudGJRmTiQaNPNakehXXuRyBdgF-kJDrR5-PQK5y_4PnyHYvZL47Ggg/exec?course=' + encodeURIComponent(course) + '&matrix=' + encodeURIComponent(matrix));
-    const data = await resp.json();
-    if (data.error) {
-      resultBox.innerHTML = "<span class='msg-err'>" + data.error + "</span>";
-    } else {
-      resultBox.innerHTML =
-        "<table>" +
-          "<tr><th>Name</th><th>Carry Mark</th></tr>" +
-          "<tr><td>" + data.name + "</td><td>" + data.mark + "</td></tr>" +
-        "</table>";
-    }
-  } catch (e) {
-    resultBox.innerHTML = "<span class='msg-err'>Cannot connect to server. Try again later.</span>";
-  }
-}
-</script>
+    <title>Carry Mark Lookup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .panel {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            padding: 30px;
+        }
+        h2 {
+            font-size: 28px;
+            color: #333;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+        label {
+            font-weight: 500;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input[type='text'] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        select:focus, input[type='text']:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: 500;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .msg-err {
+            color: #e74c3c;
+            font-weight: 500;
+            display: block;
+            text-align: center;
+        }
+        .msg-feedback {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .msg-low {
+            color: #e74c3c;
+        }
+        .msg-good {
+            color: #f39c12;
+        }
+        .msg-excellent {
+            color: #2ecc71;
+        }
+        @media (max-width: 600px) {
+            .panel {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            select, input[type='text'], button {
+                font-size: 14px;
+                padding: 8px;
+            }
+            label {
+                font-size: 14px;
+            }
+            .msg-feedback {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="panel">
-<h2>Check Your Carry Mark</h2>
-<label for="course"><b>Select Course</b></label>
-<select id="course">
-  <option value="MJD1112">MJD1112 - Anatomy and Physiology 1</option>
-  <option value="MJD1212">MJD1212 - Anatomy and Physiology 2</option>
-  <option value="MOS2233">MOS2233 - Ergonomics</option>
-  <option value="MOS3232">MOS3232 - Hazardous Waste Management</option>
-  <option value="MLD1123">MLD1123 - Biostatistics</option>
-</select>
-<label for="matrix"><b>Enter Matrix Number</b></label>
-<input type="text" id="matrix" placeholder="E.g., S12345" maxlength="20">
-<button onclick="checkMark()">Check My Mark</button>
-<div id="result"></div>
-</div>
+    <div class="panel">
+        <h2>Check Your Carry Mark</h2>
+        <label for="course">Select Course</label>
+        <select id="course">
+            <option value="MJD1112">MJD1112 - Anatomy and Physiology 1</option>
+            <option value="MJD1212">MJD1212 - Anatomy and Physiology 2</option>
+            <option value="MOS2233">MOS2233 - Ergonomics</option>
+            <option value="MOS3232">MOS3232 - Hazardous Waste Management</option>
+            <option value="MLD1123">MLD1123 - Biostatistics</option>
+        </select>
+        <label for="matrix">Enter Matrix Number</label>
+        <input type="text" id="matrix" placeholder="E.g., S12345" maxlength="20">
+        <button onclick="checkMark()">Check My Mark</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        async function checkMark() {
+            const course = document.getElementById('course').value;
+            const matrix = document.getElementById('matrix').value.trim();
+            const resultBox = document.getElementById('result');
+            resultBox.innerHTML = "";
+            if (!matrix) {
+                resultBox.innerHTML = "<span class='msg-err'>Please enter your matrix number.</span>";
+                return;
+            }
+            resultBox.innerHTML = '<div class="spinner"></div>';
+            try {
+                const resp = await fetch('https://script.google.com/macros/s/AKfycbzea4hEKqNaZ2rQudGJRmTiQaNPNakehXXuRyBdgF-kJDrR5-PQK5y_4PnyHYvZL47Ggg/exec?course=' + encodeURIComponent(course) + '&matrix=' + encodeURIComponent(matrix));
+                const data = await resp.json();
+                resultBox.innerHTML = "";
+                if (data.error) {
+                    resultBox.innerHTML = "<span class='msg-err'>" + data.error + "</span>";
+                } else {
+                    let feedback = "";
+                    let feedbackClass = "";
+                    const mark = parseFloat(data.mark);
+                    if (mark < 20) {
+                        feedback = "Your mark is too low. Seek advice.";
+                        feedbackClass = "msg-low";
+                    } else if (mark >= 20 && mark <= 30) {
+                        feedback = "Your mark is good. You can do better.";
+                        feedbackClass = "msg-good";
+                    } else if (mark >= 30 && mark <= 40) {
+                        feedback = "Your mark is excellent! Good job.";
+                        feedbackClass = "msg-excellent";
+                    }
+                    resultBox.innerHTML =
+                        "<table>" +
+                            "<tr><th>Name</th><th>Carry Mark</th></tr>" +
+                            "<tr><td>" + data.name + "</td><td>" + data.mark + "</td></tr>" +
+                        "</table>" +
+                        (feedback ? "<span class='msg-feedback " + feedbackClass + "'>" + feedback + "</span>" : "");
+                }
+            } catch (e) {
+                resultBox.innerHTML = "<span class='msg-err'>Cannot connect to server. Try again later.</span>";
+            }
+        }
+    </script>
 </body>
 </html>
