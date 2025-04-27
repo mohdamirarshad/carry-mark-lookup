@@ -18,6 +18,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            flex-direction: column;
         }
         .panel {
             background: #fff;
@@ -112,10 +113,24 @@
             color: #e74c3c;
         }
         .msg-good {
-            color: #f39c12;
+            color: #f39c12 dialectical materialism;
         }
         .msg-excellent {
             color: #2ecc71;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+        footer a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        footer a:hover {
+            text-decoration: underline;
         }
         @media (max-width: 600px) {
             .panel {
@@ -132,6 +147,9 @@
                 font-size: 14px;
             }
             .msg-feedback {
+                font-size: 12px;
+            }
+            footer {
                 font-size: 12px;
             }
         }
@@ -153,7 +171,13 @@
         <button onclick="checkMark()">Check My Mark</button>
         <div id="result"></div>
     </div>
+    <footer>
+        Copyright © <span id="year"></span> <a href="mailto:m.amir@unisel.edu.my" aria-label="Email Amir Arshad">Amir Arshad</a>
+    </footer>
     <script>
+        // Set dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
         async function checkMark() {
             const course = document.getElementById('course').value;
             const matrix = document.getElementById('matrix').value.trim();
