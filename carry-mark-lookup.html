@@ -32,26 +32,25 @@
         const resp = await fetch('https://script.google.com/macros/s/AKfycbxEEtkZ-PAISBLl6Vg8enfFBc-G74MA-ZR9ABjsL2doF5kmSS-1Amej0olxgu5bRCTg5w/exec?course=' + encodeURIComponent(course) + '&matrix=' + encodeURIComponent(matrix));
         const data = await resp.json();
         if (data.error) {
-          resultBox.innerHTML = <span class='msg-err'>$
-{data.error}</span>;
+          resultBox.innerHTML = <span class='msg-err'>
+${data.error}</span>;
         } else if (data.mark === null  data.mark === ""  data.mark === undefined) {
-          // Show message for not ready mark
           resultBox.innerHTML = 
-            <span class='msg-err'>
-${data.message ? data.message : "Your carry mark is not ready yet. Please check again later."}</span>
-            <table>
-              <tr><th>Name</th><th>Carry Mark</th></tr>
-              <tr><td>$
-{data.name}</td><td>-</td></tr>
-            </table>;
-        } else {
-          // Show the mark
-          resultBox.innerHTML = 
+            <span class='msg-err'>$
+{data.message ? data.message : "Your carry mark is not ready yet. Please check again later."}</span>
             <table>
               <tr><th>Name</th><th>Carry Mark</th></tr>
               <tr><td>
-${data.name}</td><td>${data.mark}</td></tr>
-            </table>;
+${data.name}</td><td>-</td></tr>
+            </table>
+          ;
+        } else {
+          resultBox.innerHTML = 
+            <table>
+              <tr><th>Name</th><th>Carry Mark</th></tr>
+              <tr><td>${data.name}</td><td>${data.mark}</td></tr>
+            </table>
+          ;
         }
       } catch (e) {
         resultBox.innerHTML = "<span class='msg-err'>Cannot connect to server. Try again later.</span>";
