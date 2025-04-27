@@ -24,23 +24,22 @@
       const resultBox = document.getElementById('result');
       resultBox.innerHTML = "";
 
+
       if (!matrix) {
         resultBox.innerHTML = "<span class='msg-err'>Please enter your matrix number.</span>";
         return;
       }
       try {
-        const resp = await fetch('YOUR_WEB_APP_URL?course=' + encodeURIComponent(course) + '&matrix=' + encodeURIComponent(matrix));
+        const resp = await fetch('https://script.google.com/macros/s/AKfycbxEEtkZ-PAISBLl6Vg8enfFBc-G74MA-ZR9ABjsL2doF5kmSS-1Amej0olxgu5bRCTg5w/exec?course=' + encodeURIComponent(course) + '&matrix=' + encodeURIComponent(matrix));
         const data = await resp.json();
         if (data.error) {
-          resultBox.innerHTML = <span class='msg-err'>$
-{data.error}</span>;
+          resultBox.innerHTML = `<span class='msg-err'>${data.error}</span>`;
         } else {
-          resultBox.innerHTML = 
+          resultBox.innerHTML = `
             <table>
               <tr><th>Name</th><th>Carry Mark</th></tr>
-              <tr><td>
-${data.name}</td><td>${data.mark}</td></tr>
-            </table>;
+              <tr><td>${data.name}</td><td>${data.mark}</td></tr>
+            </table>`;
         }
       } catch (e) {
         resultBox.innerHTML = "<span class='msg-err'>Cannot connect to server. Try again later.</span>";
