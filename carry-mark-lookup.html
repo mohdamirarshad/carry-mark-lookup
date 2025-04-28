@@ -113,7 +113,7 @@
             color: #e74c3c;
         }
         .msg-good {
-            color: #f39c12 dialectical materialism;
+            color: #f39c12;
         }
         .msg-excellent {
             color: #2ecc71;
@@ -169,7 +169,7 @@
         <label for="matrix">Enter Matrix Number</label>
         <input type="text" id="matrix" placeholder="E.g., S12345" maxlength="20">
         <button onclick="checkMark()">Check My Mark</button>
-        <div id="result"></div>
+        <div id="result" aria-live="polite"></div>
     </div>
     <footer>
         Copyright © <span id="year"></span> <a href="mailto:m.amir@unisel.edu.my" aria-label="Email Amir Arshad">Amir Arshad</a>
@@ -198,14 +198,24 @@
                     let feedback = "";
                     let feedbackClass = "";
                     const mark = parseFloat(data.mark);
-                    if (mark < 20) {
-                        feedback = "Your mark is too low. Seek advice.";
+                    const ranges = data.feedbackRanges;
+                    if (isNaN(mark)) {
+                        // Handle non-numeric marks (e.g., "In progress")
+                        resultBox.innerHTML =
+                            "<table>" +
+                                "<tr><th>Name</th><th>Carry Mark</th></tr>" +
+                                "<tr><td>" + data.name + "</td><td>" + data.mark + "</td></tr>" +
+                            "</table>";
+                        return;
+                    }
+                    if (mark < ranges.lowRangeMax) {
+                        feedback = ranges.lowMessage;
                         feedbackClass = "msg-low";
-                    } else if (mark >= 20 && mark <= 30) {
-                        feedback = "Your mark is good. You can do better.";
+                    } else if (mark >= ranges.medRangeMin && mark <= ranges.medRangeMax) {
+                        feedback = ranges.medMessage;
                         feedbackClass = "msg-good";
-                    } else if (mark >= 30 && mark <= 40) {
-                        feedback = "Your mark is excellent! Good job.";
+                    } else if (mark >= ranges.highRangeMin && mark <= ranges.highRangeMax) {
+                        feedback = ranges.highMessage;
                         feedbackClass = "msg-excellent";
                     }
                     resultBox.innerHTML =
