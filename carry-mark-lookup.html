@@ -189,7 +189,7 @@
             }
             resultBox.innerHTML = '<div class="spinner"></div>';
             try {
-                const resp = await fetch('https://script.google.com/macros/s/AKfycbzea4hEKqNaZ2rQudGJRmTiQaNPNakehXXuRyBdgF-kJDrR5-PQK5y_4PnyHYvZL47Ggg/exec?course=' + encodeURIComponent(course) + '&matrix=' + encodeURIComponent(matrix));
+                const resp = await fetch('https://script.google.com/macros/s/AKfycbzTVh5WyCK2NOy0wmGpL-MJgNLOVfAfmpqR52o2PIpsFJF2e232T_rtj1pRw4IqfA997g/exec?course=' + encodeURIComponent(course) + '&matrix=' + encodeURIComponent(matrix));
                 const data = await resp.json();
                 resultBox.innerHTML = "";
                 if (data.error) {
